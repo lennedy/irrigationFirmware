@@ -1,0 +1,4 @@
+#define MOTOR 13
+#define SOLENOIDE1 12
+#define SOLENOIDE2 11
+#define SOLENOIDE3 10
