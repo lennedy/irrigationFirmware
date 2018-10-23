@@ -1,6 +1,9 @@
 #include "Irrigacao.h"
 #include "Evento.h"
 #include "EEPROM.h"
+#include <Wire.h>
+#include "DS3231.h"
+
 
 #define ENDERECO_EEPROM 0
 
@@ -18,14 +21,17 @@ struct DadosEventos{
 
 Irrigacao irrigacao;
 Evento event1, event2, event3;
+RTClib RTC;
 
 void setup() {
   Serial.begin(9600);
   while (!Serial) ; // wait for Arduino Serial Monitor
 
   DadosEventos dadosEventos;
+  DateTime now = RTC.now();
 
-  setTime(8,29,0,1,1,11); // set time to Saturday 8:29:00am Jan 1 2011
+
+  setTime(now.hour(), now.minute(), now.second(), now.day(), now.month(), now.year()); // set time to Saturday 8:29:00am Jan 1 2011
 
   EEPROM.get(ENDERECO_EEPROM, dadosEventos);
 
