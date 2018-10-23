@@ -1,5 +1,6 @@
-#include <TimeLib.h>
-#include <TimeAlarms.h>
+#ifndef IRRIGACAO_H
+#define IRRIGACAO_H
+
 #include "Pinagem.h"
 #include <Arduino.h>
 
@@ -19,3 +20,5 @@ class Irrigacao{
   void abrirValvulas();
   void fecharValvulas();  
 };
+
+#endif
