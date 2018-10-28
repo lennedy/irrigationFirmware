@@ -3,15 +3,9 @@
 #include "EEPROM.h"
 #include <Wire.h>
 #include "DS3231.h"
-
+#include "Print.h"
 
 #define ENDERECO_EEPROM 0
-
-struct DadoEvento{
-  time_t horario;
-  time_t duracao;
-  bool habilitado;
-};
 
 struct DadosEventos{
   DadoEvento evento1;
@@ -22,29 +16,26 @@ struct DadosEventos{
 Irrigacao irrigacao;
 Evento event1, event2, event3;
 RTClib RTC;
+Exibir p;
 
 void setup() {
-  Serial.begin(9600);
-  while (!Serial) ; // wait for Arduino Serial Monitor
+  p.config();
 
   DadosEventos dadosEventos;
   DateTime now = RTC.now();
-
 
   setTime(now.hour(), now.minute(), now.second(), now.day(), now.month(), now.year()); // set time to Saturday 8:29:00am Jan 1 2011
 
   EEPROM.get(ENDERECO_EEPROM, dadosEventos);
 
-  event1.criarEvento(dadosEventos.evento1.horario, evento1, dadosEventos.evento1.duracao);
-  event1.enable(dadosEventos.evento1.habilitado);
-  event2.criarEvento(dadosEventos.evento2.horario, evento2, dadosEventos.evento2.duracao);
-  event2.enable(dadosEventos.evento2.habilitado);
-  event3.criarEvento(dadosEventos.evento3.horario, evento3, dadosEventos.evento3.duracao);  
-  event3.enable(dadosEventos.evento3.habilitado);
+  event1.criarEvento(dadosEventos.evento1, evento1);
+  event2.criarEvento(dadosEventos.evento2, evento2);
+  event3.criarEvento(dadosEventos.evento3, evento3);  
+
 }
 
 void loop() {
-  digitalClockDisplay();
+  p.digitalClockDisplay();
   Alarm.delay(1000); // wait one second between clock display
 }
 
@@ -77,19 +68,4 @@ void desligar() {
   event3.finalizar();
 
   irrigacao.pararTudo();
-}
-
-void digitalClockDisplay() {
-  // digital clock display of the time
-  Serial.print(hour());
-  printDigits(minute());
-  printDigits(second());
-  Serial.println();
-}
-
-void printDigits(int digits) {
-  Serial.print(":");
-  if (digits < 10)
-    Serial.print('0');
-  Serial.print(digits);
 }
