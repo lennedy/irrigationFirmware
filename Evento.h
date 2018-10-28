@@ -4,6 +4,13 @@
 #include <TimeLib.h>
 #include <TimeAlarms.h>
 
+struct DadoEvento{
+  time_t horario;
+  time_t duracao;
+  bool habilitado;
+};
+
+
 class Evento{
 
   public:
@@ -17,6 +24,7 @@ class Evento{
   void enable(bool habilitado=true);
 
   void criarEvento(time_t horario, OnTick_t funcEvento, time_t duracao);
+  void criarEvento(DadoEvento dado, OnTick_t funcEvento);
   void iniciar(OnTick_t funcDuracao);
   void finalizar();
   

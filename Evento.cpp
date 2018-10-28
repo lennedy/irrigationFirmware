@@ -25,6 +25,11 @@ void Evento::iniciar(OnTick_t funcDuracao){
   idDuracao = Alarm.timerOnce(duracaoEvento, funcDuracao);  
 }
 
+void Evento::criarEvento(DadoEvento dado, OnTick_t funcEvento){
+  criarEvento(dado.horario, funcEvento, dado.duracao);
+  enable(dado.habilitado);
+}
+
 void Evento::finalizar(){
   Alarm.free(idDuracao);
   idDuracao = dtINVALID_ALARM_ID;
